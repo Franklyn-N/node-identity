@@ -5,10 +5,15 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const compression = require('compression');
 
+
+
+const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@mycluster.eruob.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}`
+
 const dataRoutes = require('./routes/data');
 const authRoutes = require("./routes/auth");
 
 const app = express();
+
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -53,11 +58,9 @@ app.use('/data', dataRoutes);
 app.use("/auth", authRoutes);
 
 mongoose
-  .connect(
-    "mongodb+srv://Franklyn_Nusi:137WuEhK7FIACF3U@mycluster.eruob.mongodb.net/data"
-  )
+  .connect(MONGODB_URI)
   .then((result) => {
-    app.listen(3001);
+    app.listen(process.env.PORT || 3000);
   })
   .catch((err) => {
     console.log(err);
