@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
+const compression = require('compression');
 
 const dataRoutes = require('./routes/data');
 const authRoutes = require("./routes/auth");
@@ -30,6 +31,8 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+
+app.use(compression());
 app.use(bodyParser.json());
 app.use(
     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
