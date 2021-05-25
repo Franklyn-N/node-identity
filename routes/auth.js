@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require("../models/user");
 const authController = require("../controllers/auth");
 
-router.put(
+router.post(
   "/signup",
   [
     body("email")
@@ -18,8 +18,13 @@ router.put(
         });
       })
       .normalizeEmail(),
-    body("password").trim().isLength({ min: 5 }),
-    body("name").trim().not().isEmpty(),
+    body("password").trim().isLength({ min: 5 }).isAlphanumeric(),
+    body('confirmPassword').custom((value, {req}) => {
+      if(value !== req.body.password) {
+        throw new Error('Password mismatch!');
+      }
+      return true;
+    })
   ],
   authController.signup
 );

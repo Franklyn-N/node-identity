@@ -11,23 +11,30 @@ exports.signup = (req, res, next) => {
     error.data = errors.array();
     throw error;
   }
-  const firstname = req.body.firstname;
-  const lastname = req.body.lastname;
   const email = req.body.email;
   const password = req.body.password;
-  const dob = req.body.dob;
+  const confirmPassword = req.body.confirmPassword;
+  const role = req.body.role;
+  // let name = req.body.name
+  // name = name.split(" ");
+  // if(name.length < 2)
+  //   return res.status(422).json({message:"invalid nbame parameter"})
+  // const firstname = name && name.length > 0 ? name[0] : ""
+  // const lastname = name && name.length > 1 ? name[1] : ""
+
+  
   bcrypt.hash(password, 12)
   .then(hashedpassword => {
       const user = new User({
-          firstname: firstname,
-          lastname: lastname,
           email: email,
           password: hashedpassword,
-          dob: dob
+          confirmPassword: confirmPassword,
+          role
       });
       return user.save();
   })
   .then(result => {
+    console.log('Created Successfully!')
       res.status(201).json({message: 'User Created!', userId: result._id})
   })
   .catch(err => {
@@ -63,6 +70,9 @@ exports.login = (req, res, next) => {
         res.status(200).json({token: token, userId: loadedUser._id.toString()})
   })
   .catch(err => {
-      console.log(err);
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
   })  
 };

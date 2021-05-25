@@ -15,11 +15,17 @@ exports.createData = (req, res, next) => {
     error.statusCode = 422;
     throw error;
   }
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
+  const dob = req.body.dob;
   const imageUrl = req.file.path;
   const idType = req.body.idType;
   const data = new Data({
-      imageUrl: imageUrl,
-      idType: idType
+    firstname: firstname,
+    lastname: lastname,
+    dob: dob,
+    imageUrl: imageUrl,
+    idType: idType
   });
   data.save()
   .then(result => {
@@ -29,6 +35,9 @@ exports.createData = (req, res, next) => {
      });
   })
   .catch(err => {
-      console.log(err);
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
   })
 };
