@@ -60,7 +60,6 @@ exports.createData = (req, res, next) => {
     lastname: lastname,
     dob: dob,
     dataId,
-    isVerified: false,
     imageUrl: imageUrl,
     idType: idType,
   });
@@ -69,7 +68,7 @@ exports.createData = (req, res, next) => {
     .then((result) => {
       res.status(201).json({
         message: "Data submitted successfully!",
-        data: result,
+        isVerified: false
       });
     })
     .catch((err) => {
