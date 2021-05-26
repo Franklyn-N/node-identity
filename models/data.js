@@ -17,11 +17,19 @@ const dataSchema = new Schema({
   },
   imageUrl: {
     type: String,
-    required: true,
+    required: true
   },
   idType: {
     type: String,
-    required: true,
+    required: true
+  },
+  dataId: {
+    type: String,
+    required: true
+  },
+  isVerified: {
+    type: Boolean,
+    required: true
   }
 });
 

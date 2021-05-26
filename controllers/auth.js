@@ -35,10 +35,26 @@ exports.signup = (req, res, next) => {
     });
 };
 
+exports.getSignup = (req, res, next) => {
+  const userId = req.params.userId;
+  User.findById(userId)
+  .then(user => {
+    if(!user) {
+      const error = new Error('User is not signed up!');
+      error.statusCode = 422;
+      throw error;
+    }
+    signedInUser = user;
+    res.status(200).json({message: "Fetched Succesful.", userId: signedInUser._id.toString() })
+  })
+  .catch()
+};
+
 exports.getLogin = (req, res, next) => {
   const userId = req.params.userId;
   User.findById(userId)
     .then((user) => {
+      console.log(user);
       if (!user) {
         const error = new Error("User does not exist");
         error.statusCode = 422;
@@ -91,4 +107,10 @@ exports.login = (req, res, next) => {
       }
       next(err);
     });
+};
+
+exports.logout = (req, res, next) => {
+  req.session.destroy(err => {
+    console.log(err);
+  });
 };

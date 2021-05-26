@@ -27,7 +27,7 @@ exports.getCredential = (req, res, next) => {
       }
       res
         .status(200)
-        .json({ message: "Data fetched.", isVerified: false, data: creds });
+        .json({ message: "Data fetched.", data: creds });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -50,6 +50,7 @@ exports.createData = (req, res, next) => {
     throw error;
   }
   const firstname = req.body.firstname;
+  const dataId = req.body.dataId;
   const lastname = req.body.lastname;
   const dob = req.body.dob;
   const imageUrl = req.file.path;
@@ -58,6 +59,8 @@ exports.createData = (req, res, next) => {
     firstname: firstname,
     lastname: lastname,
     dob: dob,
+    dataId,
+    isVerified: false,
     imageUrl: imageUrl,
     idType: idType,
   });
