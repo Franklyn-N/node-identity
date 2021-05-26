@@ -4,6 +4,11 @@ const dataController = require('../controllers/data');
 const isAuth = require('../middleware/is-auth');
 const router = express.Router();
 
-router.post('/data', dataController.createData);
+router.get('/credentials', isAuth, dataController.getCredentials);
 
-module.exports = router;
+router.get('/credential/:dataId', isAuth, dataController.getCredential);
+
+router.post('/data', isAuth, dataController.createData);
+
+
+module.exports = router; 

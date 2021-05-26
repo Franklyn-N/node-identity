@@ -1,7 +1,41 @@
 const { validationResult } = require("express-validator/check");
-const path = require("path");
-const Data = require('../models/data');
+const Data = require("../models/data");
 
+exports.getCredentials = (req, res, next) => {
+  Data.find()
+    .then((data) => {
+      res
+        .status(200)
+        .json({ message: "Fetched data successfully.", data: data });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.getCredential = (req, res, next) => {
+  const dataId = req.params.dataId;
+  Data.findById(dataId)
+    .then((creds) => {
+      if (!creds) {
+        const error = new Error("Could not find credential.");
+        error.statusCode = 404;
+        throw error;
+      }
+      res
+        .status(200)
+        .json({ message: "Data fetched.", isVerified: false, data: creds });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
 
 exports.createData = (req, res, next) => {
   const errors = validationResult(req);
@@ -25,19 +59,20 @@ exports.createData = (req, res, next) => {
     lastname: lastname,
     dob: dob,
     imageUrl: imageUrl,
-    idType: idType
+    idType: idType,
   });
-  data.save()
-  .then(result => {
-     res.status(201).json({
-         message: 'Data submitted successfully!',
-         data: result
-     });
-  })
-  .catch(err => {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  })
+  data
+    .save()
+    .then((result) => {
+      res.status(201).json({
+        message: "Data submitted successfully!",
+        data: result,
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
 };

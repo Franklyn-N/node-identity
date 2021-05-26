@@ -22,7 +22,7 @@ const dataSchema = new Schema({
   idType: {
     type: String,
     required: true,
-  },
+  }
 });
 
 module.exports = mongoose.model("Data", dataSchema);
