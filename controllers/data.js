@@ -50,7 +50,6 @@ exports.createData = (req, res, next) => {
     throw error;
   }
   const firstname = req.body.firstname;
-  const dataId = req.body.dataId;
   const lastname = req.body.lastname;
   const dob = req.body.dob;
   const imageUrl = req.file.path;
@@ -59,7 +58,6 @@ exports.createData = (req, res, next) => {
     firstname: firstname,
     lastname: lastname,
     dob: dob,
-    dataId,
     imageUrl: imageUrl,
     idType: idType,
   });
@@ -67,7 +65,9 @@ exports.createData = (req, res, next) => {
     .save()
     .then((result) => {
       res.status(201).json({
-        message: "Data submitted successfully!"
+        message: "Data submitted successfully!",
+        id: result._id,
+        isVerified: false
       });
     })
     .catch((err) => {

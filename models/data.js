@@ -23,10 +23,6 @@ const dataSchema = new Schema({
     type: String,
     required: true
   },
-  dataId: {
-    type: String,
-    required: true
-  },
   isVerified: {
     type: Boolean,
     default: false

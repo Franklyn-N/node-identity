@@ -14,7 +14,6 @@ exports.signup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  const role = req.body.role;
   bcrypt
     .hash(password, 12)
     .then((hashedpassword) => {
@@ -22,7 +21,6 @@ exports.signup = (req, res, next) => {
         email: email,
         password: hashedpassword,
         confirmPassword: confirmPassword,
-        role,
       });
       return user.save();
     })
@@ -102,7 +100,7 @@ exports.login = (req, res, next) => {
           userId: loadedUser._id.toString(),
         },
         "thisismyveryownsecret",
-        { expiresIn: "1h" }
+        { expiresIn: "12h" }
       );
       res.status(200).json({ token: token, userId: loadedUser._id.toString() });
     })

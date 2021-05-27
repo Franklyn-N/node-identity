@@ -12,14 +12,9 @@ router.post(
         .isEmail()
         .withMessage("Please enter a valid email.")
         .custom((value, { req }) => {
-          Admin.findOne({ email: value }).then((userDoc) => {
+          return Admin.findOne({ email: value }).then((userDoc) => {
             if (userDoc) {
               return Promise.reject("E-Mail address already exists!");
-            }
-          });
-          return User.findOne({ email: value }).then((userDoc) => {
-            if (userDoc) {
-              return Promise.reject("E-Mail address already exists for a user!");
             }
           });
         })
