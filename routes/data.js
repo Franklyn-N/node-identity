@@ -10,4 +10,6 @@ router.get('/credential/:dataId', isAuth, dataController.getCredential);
 
 router.post('/data', isAuth, dataController.createData);
 
+router.post('/update/:dataId', isAuth, dataController.updateData);
+
 module.exports = router; 

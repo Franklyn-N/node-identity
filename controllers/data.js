@@ -67,8 +67,7 @@ exports.createData = (req, res, next) => {
     .save()
     .then((result) => {
       res.status(201).json({
-        message: "Data submitted successfully!",
-        isVerified: false
+        message: "Data submitted successfully!"
       });
     })
     .catch((err) => {
@@ -77,4 +76,18 @@ exports.createData = (req, res, next) => {
       }
       next(err);
     });
+};
+
+
+exports.updateData = (req, res, next) => {
+  Data.findOneAndUpdate({isVerified: false}, {isVerified: true})
+  .then(result => {
+    res.status(200).json({message: "updated successfully!"})
+  })
+  .catch((err) => {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  });
 };

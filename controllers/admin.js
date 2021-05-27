@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const User = require("../models/user");
+const Admin = require("../models/admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -14,60 +14,18 @@ exports.signup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  const role = req.body.role;
   bcrypt
     .hash(password, 12)
     .then((hashedpassword) => {
-      const user = new User({
+      const admin = new Admin({
         email: email,
         password: hashedpassword,
-        confirmPassword: confirmPassword,
-        role,
+        confirmPassword,
       });
-      return user.save();
+      return admin.save();
     })
     .then((result) => {
-      console.log("Created Successfully!");
       res.status(201).json({ message: "User Created!", userId: result._id });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-exports.getSignup = (req, res, next) => {
-  const userId = req.params.userId;
-  User.findById(userId)
-  .then(user => {
-    if(!user) {
-      const error = new Error('User is not signed up!');
-      error.statusCode = 422;
-      throw error;
-    }
-    signedInUser = user;
-    res.status(200).json({message: "Fetched Succesful.", userId: signedInUser._id.toString() })
-  })
-  .catch((err) => {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  });
-};
-
-exports.getLogin = (req, res, next) => {
-  const userId = req.params.userId;
-  User.findById(userId)
-    .then((user) => {
-      console.log(user);
-      if (!user) {
-        const error = new Error("User does not exist");
-        error.statusCode = 422;
-        throw error;
-      }
-      res
-        .status(200)
-        .json({ message: "Fetched successfully.", email: user.email });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -80,7 +38,7 @@ exports.getLogin = (req, res, next) => {
 exports.login = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  User.findOne({ email: email })
+  Admin.findOne({ email: email })
     .then((user) => {
       if (!user) {
         const error = new Error("Email not found!");
@@ -112,10 +70,4 @@ exports.login = (req, res, next) => {
       }
       next(err);
     });
-};
-
-exports.logout = (req, res, next) => {
-  req.session.destroy(err => {
-    console.log(err);
-  });
 };
