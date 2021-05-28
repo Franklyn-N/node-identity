@@ -69,8 +69,7 @@ exports.createData = (req, res, next) => {
     .then((result) => {
       res.status(201).json({
         message: "Data submitted successfully and awaiting approval. Please check again soon.",
-        id: result._id,
-        isVerified: null
+        data: result
       });
     })
     .catch((err) => {
@@ -96,7 +95,7 @@ exports.updateData = (req, res, next) => {
 };
 
 exports.updateCreds = (req, res, next) => {
-  Data.updateOne({isVerified: null}, {isVerified: false})
+  Data.updateOne({isVerified: null }, {isVerified: false})
   .then(result => {
     res.status(200).json({message: "Sorry we could not approve your credentials at this time, confirm and try again later."})
   })

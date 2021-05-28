@@ -24,7 +24,7 @@ const dataSchema = new Schema({
     required: true
   },
   isVerified: {
-    type: Boolean,
+    type: String,
     default: null
   },
   dateCreated: {
