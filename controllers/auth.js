@@ -45,7 +45,7 @@ exports.getLogin = (req, res, next) => {
       }
       res
         .status(200)
-        .json({ message: "Fetched successfully.", email: user.email });
+        .json({ message: "Fetched successfully.", email: user.email, isSubmitted: user.isSubmitted});
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -90,6 +90,19 @@ exports.login = (req, res, next) => {
       }
       next(err);
     });
+};
+
+exports.updateUser = (req, res, next) => {
+  User.updateOne({isSubmitted: false}, {isVerified: true})
+  .then(result => {
+    res.status(200).json({message: "Your user has been updated!"})
+  })
+  .catch((err) => {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  });
 };
 
 exports.logout = (req, res, next) => {

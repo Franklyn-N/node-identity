@@ -19,7 +19,7 @@ exports.getCredentials = (req, res, next) => {
 
 exports.getCredential = (req, res, next) => {
   const dataId = req.params.dataId;
-  Data.findById(dataId)
+  Data.find().where('dataId').equals(dataId)
     .then((creds) => {
       if (!creds) {
         const error = new Error("Could not find credential.");
@@ -55,6 +55,7 @@ exports.createData = (req, res, next) => {
   const dob = req.body.dob;
   const imageUrl = req.file.path;
   const idType = req.body.idType;
+  const dataId = req.body.dataId;
   const dateCreated = req.body.dateCreated;
   const data = new Data({
     firstname: firstname,
@@ -62,7 +63,8 @@ exports.createData = (req, res, next) => {
     dob: dob,
     imageUrl: imageUrl,
     idType: idType,
-    dateCreated
+    dateCreated,
+    dataId
   });
   data
     .save()

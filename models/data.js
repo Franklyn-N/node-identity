@@ -30,6 +30,10 @@ const dataSchema = new Schema({
   dateCreated: {
     type: Date,
     required: true
+  },
+  dataId: {
+    type: String,
+    required: true
   }
 });
 
