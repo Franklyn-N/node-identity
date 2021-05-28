@@ -33,26 +33,6 @@ exports.signup = (req, res, next) => {
     });
 };
 
-exports.getSignup = (req, res, next) => {
-  const userId = req.params.userId;
-  User.findById(userId)
-  .then(user => {
-    if(!user) {
-      const error = new Error('User is not signed up!');
-      error.statusCode = 422;
-      throw error;
-    }
-    signedInUser = user;
-    res.status(200).json({message: "Fetched Succesful.", userId: signedInUser._id.toString() })
-  })
-  .catch((err) => {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  });
-};
-
 exports.getLogin = (req, res, next) => {
   const userId = req.params.userId;
   User.findById(userId)
