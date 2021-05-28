@@ -105,6 +105,19 @@ exports.updateUser = (req, res, next) => {
   });
 };
 
+exports.updateSignup = (req, res, next) => {
+  User.updateOne({isSubmitted: false }, {isSubmitted: true})
+  .then(result => {
+    res.status(200).json({message: "SignUp updated!"})
+  })
+  .catch((err) => {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  });
+};
+
 exports.logout = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);

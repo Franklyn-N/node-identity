@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator/check");
 const Data = require("../models/data");
-const mongoose = require('mongoose');
+
 
 exports.getCredentials = (req, res, next) => {
   Data.find()
