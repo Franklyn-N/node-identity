@@ -55,20 +55,22 @@ exports.createData = (req, res, next) => {
   const dob = req.body.dob;
   const imageUrl = req.file.path;
   const idType = req.body.idType;
+  const dateCreated = req.body.dateCreated;
   const data = new Data({
     firstname: firstname,
     lastname: lastname,
     dob: dob,
     imageUrl: imageUrl,
     idType: idType,
+    dateCreated
   });
   data
     .save()
     .then((result) => {
       res.status(201).json({
-        message: "Data submitted successfully!",
+        message: "Data submitted successfully and awaiting approval. Please check again soon.",
         id: result._id,
-        isVerified: false
+        isVerified: null
       });
     })
     .catch((err) => {
@@ -81,9 +83,9 @@ exports.createData = (req, res, next) => {
 
 
 exports.updateData = (req, res, next) => {
-  Data.findOneAndUpdate({isVerified: false}, {isVerified: true})
+  Data.updateOne({isVerified: null}, {isVerified: true})
   .then(result => {
-    res.status(200).json({message: "updated successfully!"})
+    res.status(200).json({message: "Your credentials have been approved!"})
   })
   .catch((err) => {
     if (!err.statusCode) {
@@ -91,16 +93,17 @@ exports.updateData = (req, res, next) => {
     }
     next(err);
   });
-  // const dataId = req.params.dataId;
-  // Data.findById(dataId)
-  // .then(userDoc => {
-  //   Data.updateOne({_id: userDoc._id}, {$set: { isVerified: true}});
-  //   return userDoc.save();
-  // })
-  // .then(savedDoc => {
-  //   savedDoc === userDoc
-  // })
-  // .catch(err => {                                                                                                                                                                                                                          
-  //   console.log(err);
-  // })
+};
+
+exports.updateCreds = (req, res, next) => {
+  Data.updateOne({isVerified: null}, {isVerified: false})
+  .then(result => {
+    res.status(200).json({message: "Sorry we could not approve your credentials at this time, confirm and try again later."})
+  })
+  .catch((err) => {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  });
 };
