@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator/check");
 const Data = require("../models/data");
+const mongoose = require('mongoose');
 
 exports.getCredentials = (req, res, next) => {
   Data.find()
@@ -90,4 +91,16 @@ exports.updateData = (req, res, next) => {
     }
     next(err);
   });
+  // const dataId = req.params.dataId;
+  // Data.findById(dataId)
+  // .then(userDoc => {
+  //   Data.updateOne({_id: userDoc._id}, {$set: { isVerified: true}});
+  //   return userDoc.save();
+  // })
+  // .then(savedDoc => {
+  //   savedDoc === userDoc
+  // })
+  // .catch(err => {                                                                                                                                                                                                                          
+  //   console.log(err);
+  // })
 };
