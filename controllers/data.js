@@ -19,7 +19,7 @@ exports.getCredentials = (req, res, next) => {
 
 exports.getCredential = (req, res, next) => {
   const dataId = req.params.dataId;
-  Data.find().where('dataId').equals(dataId)
+  Data.findById(dataId)
     .then((creds) => {
       if (!creds) {
         const error = new Error("Could not find credential.");
@@ -84,7 +84,7 @@ exports.createData = (req, res, next) => {
 
 
 exports.updateData = (req, res, next) => {
-  Data.updateOne({isVerified: null}, {isVerified: true})
+  Data.findOneAndUpdate({isVerified: null}, {isVerified: true})
   .then(result => {
     res.status(200).json({message: "Your credentials have been approved!"})
   })
@@ -97,7 +97,7 @@ exports.updateData = (req, res, next) => {
 };
 
 exports.updateCreds = (req, res, next) => {
-  Data.updateOne({isVerified: null }, {isVerified: false})
+  Data.findOneAndUpdate({isVerified: null }, {isVerified: false})
   .then(result => {
     res.status(200).json({message: "Sorry we could not approve your credentials at this time, confirm and try again later."})
   })

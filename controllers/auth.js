@@ -93,22 +93,9 @@ exports.login = (req, res, next) => {
 };
 
 exports.updateUser = (req, res, next) => {
-  User.updateOne({isSubmitted: false}, {isVerified: true})
+  User.findOneAndUpdate({isSubmitted: false}, {isSubmitted: true})
   .then(result => {
-    res.status(200).json({message: "Your user has been updated!"})
-  })
-  .catch((err) => {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  });
-};
-
-exports.updateSignup = (req, res, next) => {
-  User.updateOne({isSubmitted: false }, {isSubmitted: true})
-  .then(result => {
-    res.status(200).json({message: "SignUp updated!"})
+    res.status(200).json({message: "Your user has been updated"})
   })
   .catch((err) => {
     if (!err.statusCode) {

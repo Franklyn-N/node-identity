@@ -36,8 +36,6 @@ router.post("/login", authController.login);
 
 router.post('/update/:userId', authController.updateUser);
 
-router.post('/updatesignup/:userId', authController.updateSignup);
-
 router.post('/logout', authController.logout);
 
 module.exports = router;
