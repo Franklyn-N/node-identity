@@ -8,10 +8,10 @@ router.get('/credentials', dataController.getCredentials);
 
 router.get('/credential/:dataId', isAuth, dataController.getCredential);
 
-router.post('/data', isAuth, dataController.createData);
+router.post('/data', dataController.createData);
 
-router.post('/update/:dataId', isAuth, dataController.updateData);
+router.post('/update/:dataId', dataController.updateData);
 
-router.post('/updates/:dataId', isAuth, dataController.updateCreds);
+router.post('/updates/:dataId', dataController.updateCreds);
 
 module.exports = router; 
